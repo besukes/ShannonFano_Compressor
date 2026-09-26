@@ -8,11 +8,16 @@ Este projeto foi iniciado no dia **26 de setembro de 2026** por um estudante de 
 
 Para compilar basta utilizar o comando
 
-´´ make compressor ´´
+´´´ 
+    make compressor 
+´´´
 
 E para abrir o programa basta correr o comando 
 
-´´ ./compressor **args** ´´
+´´´ 
+    ./compressor **args** 
+
+´´´
 
 Onde **args** seria o path para o ficheiro que quer comprimir.
 Após execução do programa ele díra quanto tempo demorou a comprimir e será gerado um ficheiro do mesmo tipo , na mesma pasta do comprimido , com o nome do ficheiro seguido por "_compressed".
