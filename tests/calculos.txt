@@ -1,0 +1,15 @@
+nao sei o que por aqui , so quero comprimir estes dados
+acho que este programa ficou bom e foi bastante rapido de se fazer
+apenas queria fazer uma introducao na area de compressao de dados porque parece engracado
+estou a aplicar oque aprendi em FCD (Fundamentos De Comunicao de Dados) , aplicando
+as formulas e os conceitos/algoritmos em projetos reais
+
+espero que este ficheiro funcione e que o projeto estaja decente :)
+para quem estiver a ler isto fica um desafio decifrar esta sequencia
+
+1*9 = 10
+2*10 = 14
+3*11 = 18
+4*12 = 22
+5*13 = 26
+6 + 13 = ??
