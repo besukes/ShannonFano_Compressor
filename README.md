@@ -15,10 +15,10 @@ Para compilar basta utilizar o comando
 E para abrir o programa basta correr o comando 
 
 ```
-    ./compressor **args** 
+    ./compressor (path)
 ```
 
-Onde **args** seria o path para o ficheiro que quer comprimir.
+Onde **path** seria o caminho para o ficheiro que quer comprimir.
 Após execução do programa ele díra quanto tempo demorou a comprimir e será gerado um ficheiro do mesmo tipo , na mesma pasta do comprimido , com o nome do ficheiro seguido por "_compressed".
 <br>
 Um exemplo prático seria um ficheiro calculos.txt que ficaria no final , na mesma pasta onde se encontra calculos.txt , agora com o nome calculos_compressed.txt .
