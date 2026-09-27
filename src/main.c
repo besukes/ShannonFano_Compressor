@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "main.h"
+#include "includes/main.h"
 
 #define INVALID_PATH 1
 #define NO_PATH 2
@@ -9,7 +9,7 @@
 
 
 
-
+/* Error Handler function to just inform the user what erros the program faced during execution*/
 int error_handler(int error , int i){
     if(error == INVALID_PATH){
         printf("[ERROR]You entered a invalid file path at argument %d\n , or the file exists ,"
@@ -38,5 +38,6 @@ int main(int argc , char ** argv){
         int compressable = compressFile(&file_info);
         if(!compressable) return error_handler(NOT_COMPRESSABLE,i);
     }
+    free_memory(&file_info);
     return 0;
 }

@@ -4,7 +4,7 @@ details about the compresssion so it can be decompressed after when , and if , n
 #include "compressor.h"
 
 
-/* Recursively applies Shannon-Fano's compression algorithm to turn */
+/* Recursively applies Shannon-Fano's compression algorithm to turn the symbol into a sequence of bits*/
 int sfcompress(float * prob , unsigned long long * new_symb , int ns){
     //We reached the final of Shannon-Fano's Algorithm
     if(ns == 1) return 1;
@@ -27,7 +27,29 @@ int sfcompress(float * prob , unsigned long long * new_symb , int ns){
     return 0;
 }
 
+
+
+/* Checks if the probability distribution has maximum entropy , because if it does then the file cannot be compressed*/
+int max_entropy(float * prob , int ns){
+    if(ns > 0){ //Checks if theres atleast one symbol
+        float prob_0 = prob[0];
+        for(int i=1;i<ns;i++){
+            if(prob[i] != prob_0) return 0; //If theres a symbol with a different probability then we can compress
+        }
+    }
+    return 1;
+}
+
+
+
+/* This function compresses the file using the Shannon-Fano algorithm and then writes out a file with the compressed data 
+and also the necessary information for decompression */
 int compressFile(CompressInfo * file_info){
     sortByProbability(file_info->symbols,file_info->probabilities,file_info->n_symbols);
+
+    if(max_entropy(file_info->probabilities,file_info->n_symbols)) return 0;
     sfcompress(file_info->probabilities,file_info->new_symbols,file_info->n_symbols);
+
+    writeOutCompressedFile(file_info);
+    return 1;
 }
