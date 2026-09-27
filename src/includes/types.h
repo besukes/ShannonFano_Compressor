@@ -4,6 +4,7 @@
 /* Structure to hold information about the file being compressed */
 typedef struct CompressInfo{
     FILE * file; //Pointer to the file that is being compressed
+    char * file_path; //Stores the file path 
     int n_symbols; //Number of symbols in the file
     char * symbols; //Array of symbols in the file
     float * probabilities; //Array of probabilities of each symbol that resides in the file

@@ -42,8 +42,9 @@ int max_entropy(float * prob , int ns){
 
 
 
-/* This function compresses the file using the Shannon-Fano algorithm and then writes out a file with the compressed data 
-and also the necessary information for decompression */
+/*  This function compresses the file using the Shannon-Fano algorithm and then writes out a file with the compressed data 
+and also the necessary information for decompression.
+    Returns 1 if sucess , e.g. the file is compressable , and 0 if not.*/
 int compressFile(CompressInfo * file_info){
     sortByProbability(file_info->symbols,file_info->probabilities,file_info->n_symbols);
 

@@ -10,6 +10,7 @@ CompressInfo init_compress_info(void){
     c.new_symbols = NULL;
     c.probabilities = NULL;
     c.symbols = NULL;
+    c.file_path = NULL;
     return c;
 }
 
@@ -18,5 +19,5 @@ void free_memory(CompressInfo * c){
     free(c->symbols);
     free(c->probabilities);
     free(c->new_symbols);
-    fclose(c->file);
+    if(c->file!=NULL) fclose(c->file);
 }

@@ -72,6 +72,7 @@ int parseArguments(char * path , CompressInfo * file_info){
     FILE * file = fopen(path,"r");
     if(file == NULL) return 0;
     file_info->file = file;
+    file_info->file_path = path;
 
     int symbols[MAX_SYMBOLS] = {0};
     char line[LINE_MAX];
