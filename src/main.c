@@ -24,6 +24,7 @@ int error_handler(int error , int i){
         printf("[ERROR]You entered at position %d of your arguments , a non compressable file.\n" , i - 1);
         return NOT_COMPRESSABLE;
     }
+    return 0;
 }
 
 

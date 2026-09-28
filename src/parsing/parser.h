@@ -1,4 +1,4 @@
-#include "includes/types.h"
+#include "src/includes/types.h"
 
 
 int parseArguments(char * path , CompressInfo * file_info);

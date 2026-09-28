@@ -56,7 +56,7 @@ void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
 /* Reads each individual file line incrementing symbols array on its respective index ,
  for each time an symbol is seen.*/
 void lineParser(char line[LINE_MAX] , int symbols[MAX_SYMBOLS] , CompressInfo * file_info){
-    for(int i=0; line[i] != '\n' ; i++){
+    for(int i=0; line[i] != '\n' && line[i] != '\0'; i++){
         symbols[line[i]]++;
     }
 }
