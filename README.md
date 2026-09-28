@@ -20,8 +20,8 @@ E para abrir o programa basta correr o comando
 
 Onde **path** seria o caminho para o ficheiro que quer comprimir.
 O utilizador pode incluir vários paths e todos eles serão comprimidos.
-Após execução do programa ele díra quanto tempo demorou a comprimir e será gerado um ficheiro do mesmo tipo , na mesma pasta do comprimido , com o nome do ficheiro seguido por "_compressed".
+Após execução do programa ele díra quanto tempo demorou a comprimir e será gerado um ficheiro do mesmo tipo , na mesma pasta do comprimido , com o nome do ficheiro seguido por "_zip".
 <br>
-Um exemplo prático seria um ficheiro calculos.txt que ficaria no final , na mesma pasta onde se encontra calculos.txt , agora com o nome calculos_compressed.txt .
+Um exemplo prático seria um ficheiro calculos.txt que ficaria no final , na mesma pasta onde se encontra calculos.txt , agora com o nome calculos_zip.txt .
 <br>
 O programa também dirá no final a percentagem de compressão que conseguiu fazer , o rendimento desta compressão , noutras palavras.
