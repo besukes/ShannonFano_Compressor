@@ -1,10 +1,5 @@
 #include "parser.h"
 
-#define LINE_MAX 2048
-#define MAX_SYMBOLS 256
-
-
-
 
 /* Passes the symbols of the file to an array of symbols */
 void assertSymbols(char * orig , int number_s , char * dest){

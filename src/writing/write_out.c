@@ -6,4 +6,8 @@ void writeOutCompressedFile(CompressInfo * file_info){
     char new_path[length + 5];
     append_zip(file_info->file_path,new_path);
     
+    char line[LINE_MAX];
+    while(fgets(line,LINE_MAX,file_info->file)){
+        
+    }
 }

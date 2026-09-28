@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define LINE_MAX 2048
+#define MAX_SYMBOLS 256
+
+
+
 /* Structure to hold information about the file being compressed */
 typedef struct CompressInfo{
     FILE * file; //Pointer to the file that is being compressed
