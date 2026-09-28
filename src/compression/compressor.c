@@ -6,7 +6,7 @@ details about the compresssion so it can be decompressed after when , and if , n
 
 /* Recursively applies Shannon-Fano's compression algorithm to turn the symbol into a sequence of bits*/
 int sfcompress(float * prob , unsigned long long * new_symb , int ns){
-    //We reached the final of Shannon-Fano's Algorithm
+    //We reached the final depth of Shannon-Fano's Algorithm
     if(ns == 1) return 1;
 
     float acc_prob = 0.0f;
