@@ -50,4 +50,5 @@ void writeOutCompressedFile(CompressInfo * file_info){
     }
 
     writeDecompressionInfo(new_file,file_info);
+    fclose(new_file);
 }

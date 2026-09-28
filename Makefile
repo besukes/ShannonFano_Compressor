@@ -1,8 +1,8 @@
 CC = gcc
 
-CFLAGS = -Wall -O3 -flto -DNDEBUG -I. -Iincludes 
+CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Iincludes 
 
-LDFLAGS = 
+LDFLAGS = -fsanitize=address,undefined
 
 SRC = src/main.c \
 	  src/compression/compressor.c \
@@ -19,7 +19,7 @@ OBJ = $(SRC:%.c=build/%.o)
 
 
 compressor : $(OBJ)
-	$(CC) $(OBJ) -o $@ $(LCFLAGS)
+	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 
 build/%.o: %.c
 	@mkdir -p $(dir $@)
