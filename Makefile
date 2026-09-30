@@ -2,7 +2,7 @@ CC = gcc
 
 CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Isrc/includes -Isrc/debug
 
-LDFLAGS = -fsanitize=address,undefined
+LDFLAGS = -fsanitize=address,undefined -lm
 
 SRC = src/main.c \
 	  src/compression/compressor.c \

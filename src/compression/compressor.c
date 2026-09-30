@@ -5,24 +5,29 @@ details about the compresssion so it can be decompressed after when , and if , n
 
 
 /* Recursively applies Shannon-Fano's compression algorithm to turn the symbol into a sequence of bits*/
-int sfcompress(float * prob , unsigned long long * new_symb , int ns){
+int sfcompress(float * prob , unsigned long long * new_symb , int ns , float set_half_prob){
     //We reached the final depth of Shannon-Fano's Algorithm
     if(ns <= 1) return 1;
 
     float acc_prob = 0.0f;
     int n_left_tree = 0;
 
-    for(int i=0;i < ns - 1; i++){
+    int i;
+    for(i=0;i < ns - 1; i++){
         acc_prob+=prob[i];
         n_left_tree ++;
-        if(acc_prob >= 50.0f) break;
+        if(acc_prob >= set_half_prob) break;
     }
+    if(abs(set_half_prob - acc_prob-prob[i]) < abs(set_half_prob - acc_prob))
+        acc_prob = acc_prob - prob[i];
+
+    float right_node_prob = 2*set_half_prob - acc_prob;
 
     for(int j=0 ; j < n_left_tree ; j++) new_symb[j] = (new_symb[j] << 1);
     for(int u = n_left_tree ; u < ns ; u++) new_symb[u] = (new_symb[u] << 1) | 1ULL;
 
-    sfcompress(prob,new_symb,n_left_tree);
-    sfcompress(prob+n_left_tree,new_symb+n_left_tree,ns-n_left_tree);
+    sfcompress(prob,new_symb,n_left_tree,acc_prob/2);
+    sfcompress(prob+n_left_tree,new_symb+n_left_tree,ns-n_left_tree,right_node_prob/2);
 
     return 0;
 }
@@ -48,8 +53,12 @@ and also the necessary information for decompression.
 int compressFile(CompressInfo * file_info){
     sortByProbability(file_info->symbols,file_info->probabilities,file_info->n_symbols);
 
+    //Just for debugging
+    if(IS_DEBUGGING_PARSED_S) debug_parsed_symbols(file_info);
+    if(IS_DEBUGGING_PARSED_P) debug_parsed_probabilities(file_info);
+
     if(max_entropy(file_info->probabilities,file_info->n_symbols)) return 0;
-    sfcompress(file_info->probabilities,file_info->new_symbols,file_info->n_symbols);
+    sfcompress(file_info->probabilities,file_info->new_symbols,file_info->n_symbols,0.5f);
 
     //Just for debugging
     if(IS_DEBUGGING_NS) debug_NS_value(file_info);
