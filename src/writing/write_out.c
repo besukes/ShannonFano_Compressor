@@ -15,7 +15,7 @@ void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new
     }
 
     int i=0;
-    while(line[i]!='\n' && line[i]!='\0'){
+    while(line[i]!='\0'){
         int j=0;
         for(;j<file_info->n_symbols && line[i] != file_info->symbols[j];j++);
 
@@ -23,7 +23,7 @@ void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new
         while(temp!=0){
             unsigned long long three_r_bits = (temp & 1ULL) 
                                             | (temp & (1ULL<<1)) 
-                                            | (temp && (1ULL << 2));
+                                            | (temp & (1ULL << 2));
             char flush = (char)three_r_bits;
             fprintf(new_file,"%c",flush);
             temp = temp >> 3;
