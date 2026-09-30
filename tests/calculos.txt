@@ -4,7 +4,7 @@ apenas queria fazer uma introducao na area de compressao de dados porque parece 
 estou a aplicar oque aprendi em FCD (Fundamentos De Comunicao de Dados) , aplicando
 as formulas e os conceitos/algoritmos em projetos reais
 
-espero que este ficheiro funcione e que o projeto estaja decente :)
+espero que este ficheiro funcione e que o projeto esteja decente :)
 para quem estiver a ler isto fica um desafio decifrar esta sequencia
 
 1*9 = 10

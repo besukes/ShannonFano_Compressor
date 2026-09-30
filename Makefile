@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Iincludes 
+CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Isrc/includes -Isrc/debug
 
 LDFLAGS = -fsanitize=address,undefined
 
@@ -12,6 +12,7 @@ SRC = src/main.c \
 	  src/parsing/parser.c \
 	  src/writing/strings.c \
 	  src/writing/write_out.c \
+	  src/debug/debug.c
 
 
 
@@ -27,4 +28,4 @@ build/%.o: %.c
 
 clean:
 	rm -rf build
-	rm compressor
+	rm compressor tests/calculos_zip.txt

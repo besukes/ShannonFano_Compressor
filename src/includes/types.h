@@ -10,7 +10,8 @@
 typedef struct CompressInfo{
     FILE * file; //Pointer to the file that is being compressed
     char * file_path; //Stores the file path 
-    int n_symbols; //Number of symbols in the file
+    int total_symbols; //Number of total symbols in the file
+    int n_symbols; //Number of unique symbols in the file
     char * symbols; //Array of symbols in the file
     float * probabilities; //Array of probabilities of each symbol that resides in the file
     unsigned long long * new_symbols; //Array of new bit sequences that represent the symbols in the file

@@ -1,6 +1,5 @@
 #include "parser.h"
 
-
 /* Passes the symbols of the file to an array of symbols */
 void assertSymbols(char * orig , int number_s , char * dest){
     for(int i = 0 ; i < number_s ; i++){
@@ -9,8 +8,8 @@ void assertSymbols(char * orig , int number_s , char * dest){
 }
 
 /*Calculates the probability of each symbol appearing on the file.*/
-void assertProbabilities(int * freq , int number_s , float * dest){
-    float total = (float)number_s;
+void assertProbabilities(int * freq , int number_s , int total_number_s , float * dest){
+    float total = (float)total_number_s;
     for(int i=0 ; i < number_s ; i++){
         dest[i] = (float)freq[i] / total;
     }
@@ -36,8 +35,9 @@ void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
     int freq_symbols[256];
     for(int i = 0 ; i < MAX_SYMBOLS ; i++){
         if(symbols[i]){
-            file_symbols[number_symbols] = i;
+            file_symbols[number_symbols] = (char)i;
             freq_symbols[number_symbols] = symbols[i];
+            if(IS_DEBUGGING_PARSED_FREQ) printf("%d\n",symbols[i]);
             number_symbols++;
         }
     }
@@ -48,16 +48,20 @@ void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
     file_info->new_symbols = calloc(number_symbols,sizeof(unsigned long long)*number_symbols);
     
     assertSymbols(file_symbols,number_symbols,file_info->symbols);
-    assertProbabilities(freq_symbols,number_symbols,file_info->probabilities);
+    assertProbabilities(freq_symbols,number_symbols,file_info->total_symbols,file_info->probabilities);
     assertMaxBits(file_symbols,number_symbols,&file_info->last_max_bits);
+
+    if(IS_DEBUGGING_PARSED_S) debug_parsed_symbols(file_info);
+    if(IS_DEBUGGING_PARSED_P) debug_parsed_probabilities(file_info);
 }
 
 
 /* Reads each individual file line incrementing symbols array on its respective index ,
  for each time an symbol is seen.*/
-void lineParser(char line[LINE_MAX] , int symbols[MAX_SYMBOLS] , CompressInfo * file_info){
-    for(int i=0; line[i] != '\n' && line[i] != '\0'; i++){
+void lineParser(char line[LINE_MAX] , int symbols[MAX_SYMBOLS] , int * total_symbols){
+    for(int i=0;line[i] != '\0'; i++){
         symbols[line[i]]++;
+        (*total_symbols)++;
     }
 }
 
@@ -73,7 +77,7 @@ int parseArguments(char * path , CompressInfo * file_info){
     char line[LINE_MAX];
 
     while(fgets(line,LINE_MAX,file)){
-        lineParser(line,symbols,file_info);
+        lineParser(line,symbols,&file_info->total_symbols);
     }
     info_parser(symbols,file_info);
     return 1;

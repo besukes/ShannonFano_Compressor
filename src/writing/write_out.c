@@ -9,10 +9,13 @@ void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info){
 
 
 void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new_file){
-    if(file_info->n_symbols == 0) return;
+    if(file_info->n_symbols == 0){
+        printf("[ATTENTION] No symbols found in file\n");
+        return;
+    }
 
     int i=0;
-    while(*line!='\n'){
+    while(line[i]!='\n' && line[i]!='\0'){
         int j=0;
         for(;j<file_info->n_symbols && line[i] != file_info->symbols[j];j++);
 
@@ -44,11 +47,13 @@ void writeOutCompressedFile(CompressInfo * file_info){
     }
     new_file = fopen(new_path,"w");
 
+    fclose(file_info->file);//Assumes file exists
+    fopen(file_info->file_path,"r"); //Opens it again to read the file one more time to print
+
     char line[LINE_MAX];
     while(fgets(line,LINE_MAX,file_info->file)){
         writeCompressedFileLine(line,file_info,new_file);
     }
 
     writeDecompressionInfo(new_file,file_info);
-    fclose(new_file);
 }

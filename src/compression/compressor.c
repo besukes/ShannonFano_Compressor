@@ -7,7 +7,7 @@ details about the compresssion so it can be decompressed after when , and if , n
 /* Recursively applies Shannon-Fano's compression algorithm to turn the symbol into a sequence of bits*/
 int sfcompress(float * prob , unsigned long long * new_symb , int ns){
     //We reached the final depth of Shannon-Fano's Algorithm
-    if(ns == 1) return 1;
+    if(ns <= 1) return 1;
 
     float acc_prob = 0.0f;
     int n_left_tree = 0;
@@ -50,6 +50,9 @@ int compressFile(CompressInfo * file_info){
 
     if(max_entropy(file_info->probabilities,file_info->n_symbols)) return 0;
     sfcompress(file_info->probabilities,file_info->new_symbols,file_info->n_symbols);
+
+    //Just for debugging
+    if(IS_DEBUGGING_NS) debug_NS_value(file_info);
 
     writeOutCompressedFile(file_info);
     return 1;
