@@ -26,6 +26,8 @@ void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new
                                             | (temp & (1ULL << 2));
             char flush = (char)three_r_bits;
             fprintf(new_file,"%c",flush);
+            if(IS_DEBUGGING_WRITEOUT)
+                printf("Just printed : %c for symbol %c\n",flush,file_info->symbols[j]);
             temp = temp >> 3;
         }
         i++;
