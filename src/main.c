@@ -31,14 +31,18 @@ int error_handler(int error , int i){
 int main(int argc , char ** argv){
     if(argc < 2) return error_handler(NO_PATH,0);
     CompressInfo file_info = init_compress_info();
+    int error = 0;
     for(int i=1;i<argc;i++){
+        resetCompressionInfo(&file_info);
 
         int exists_path = parseArguments(argv[i],&file_info);
-        if(!exists_path) return error_handler(INVALID_PATH,i);
+        if(!exists_path) error = error_handler(INVALID_PATH,i);
 
         int compressable = compressFile(&file_info);
-        if(!compressable) return error_handler(NOT_COMPRESSABLE,i);
+        if(!compressable && !error) error = error_handler(NOT_COMPRESSABLE,i);
+
+        if(error) break;
     }
     free_memory(&file_info);
-    return 0;
+    return (error);
 }

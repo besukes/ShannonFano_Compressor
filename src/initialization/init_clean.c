@@ -4,10 +4,9 @@
 CompressInfo init_compress_info(void){
     CompressInfo c;
     c.file = NULL;
-    c.last_max_bits = 0;
     c.n_symbols = 0;
+    c.is_open_file = 0;
     c.total_symbols = 0;
-    c.new_max_bits = 0;
     c.new_symbols = NULL;
     c.probabilities = NULL;
     c.symbols = NULL;
@@ -23,4 +22,26 @@ void free_memory(CompressInfo * c){
     free(c->probabilities);
     free(c->new_symbols);
     free(c->code_len);
+    if(c->is_open_file) fclose(c->file);
+}
+
+
+void resetCompressionInfo(CompressInfo * f){
+    if(f->is_open_file) fclose(f->file);
+    free(f->code_len);
+    free(f->new_symbols);
+    free(f->symbols);
+    free(f->probabilities);
+
+    f->file = NULL;
+    f->file_path = NULL;
+    f->code_len = NULL;
+    f->new_symbols = NULL;
+    f->symbols = NULL;
+    f->probabilities = NULL;
+
+    f->n_symbols = 0;
+    f->is_open_file = 0;
+    f->number_zeros = 0;
+    f->total_symbols = 0;
 }

@@ -28,4 +28,5 @@ build/%.o: %.c
 
 clean:
 	rm -rf build
-	rm compressor tests/calculos_zip.txt
+	rm compressor
+	rm tests/t1.txt tests/t2.txt

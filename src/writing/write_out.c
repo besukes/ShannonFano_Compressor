@@ -2,11 +2,11 @@
 
 
 /*Writes decompresssion info in the notation NEW_SYMBOL = OLD_SYMBOL in order to decompress after*/
-void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info){
-    fprintf(file_info->file,"\nDecompressed Information\n");
+void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info , int flushout_bits){
+    fprintf(new_file,"\nDecompression %d\n",flushout_bits);
     int size = file_info->n_symbols;
     for(int i=0;i<size;i++){
-        fprintf(file_info->file," %llu = %c ",file_info->new_symbols[i],file_info->symbols[i]);
+        fprintf(new_file,"%c:%0.f ",file_info->symbols[i],file_info->probabilities[i]*file_info->total_symbols);
     }
 }
 
@@ -25,13 +25,15 @@ static void write_out_compressed(BitWriter* bw , unsigned long long value , int 
 }
 
 /*Flushes the last bits in the buffer when the file was completely read , to avoid leaving important info behind*/
-static void flushout(BitWriter * bw){
+static int flushout(BitWriter * bw){
+    int ret = bw->flush_bits;
     if(bw->flush_bits > 0){
         bw->buffer <<= (8 - bw->flush_bits); 
         fputc(bw->buffer,bw->file);
         bw->flush_bits = 0;
         bw->buffer = 0;
     }
+    return ret;
 }
 
 /*Good looking function that counts how many relevant bits a 64 bit number has*/
@@ -56,8 +58,8 @@ void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new
         if(j == file_info->n_symbols) printf("[ERROR] Error while finding symbol\n");
 
         unsigned long long temp = file_info->new_symbols[j];
-        if(temp == 0){fprintf(new_file,"%c",'\0'); file_info->number_zeros++;} //Needs to be better handled
-        else write_out_compressed(bw,temp,file_info->code_len[j]);
+        if(temp == 0) file_info->number_zeros++; //Needs to be better handled
+        write_out_compressed(bw,temp,file_info->code_len[j]);
         i++;
     }
 }
@@ -91,10 +93,9 @@ void writeOutCompressedFile(CompressInfo * file_info){
     while(fgets(line,LINE_MAX,file_info->file)){
         writeCompressedFileLine(line,file_info,new_file,&bw);
     }
-    flushout(&bw);
+    int flushout_bits = flushout(&bw);
 
-    writeDecompressionInfo(new_file,file_info);
+    writeDecompressionInfo(new_file,file_info,flushout_bits);
 
-    fclose(file_info->file);
     fclose(new_file);
 }

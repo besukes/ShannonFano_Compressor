@@ -15,16 +15,6 @@ void assertProbabilities(int * freq , int number_s , int total_number_s , float 
     }
 }
 
-/* Asserts the max amount of bits necessary to write the longest symbol of the file.*/
-void assertMaxBits(char * file_symbols , int number_s , int * max_bits){
-    int asserter = file_symbols[number_s - 1];
-    int bits = 1;
-    while(asserter > 0){
-        asserter = asserter / 10;
-        bits++;
-    }
-    *max_bits = bits;
-}
 
 
 /*Translates what we have read from each line to actual meaningful information to latter use for 
@@ -50,7 +40,6 @@ void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
     
     assertSymbols(file_symbols,number_symbols,file_info->symbols);
     assertProbabilities(freq_symbols,number_symbols,file_info->total_symbols,file_info->probabilities);
-    assertMaxBits(file_symbols,number_symbols,&file_info->last_max_bits);
 
     if(IS_DEBUGGING_PARSED_S) debug_parsed_symbols(file_info);
     if(IS_DEBUGGING_PARSED_P) debug_parsed_probabilities(file_info);
@@ -71,6 +60,7 @@ on fail , aka the file path doesnt return any actual file.*/
 int parseArguments(char * path , CompressInfo * file_info){
     FILE * file = fopen(path,"r");
     if(file == NULL) return 0;
+    file_info->is_open_file = 1;
     file_info->file = file;
     file_info->file_path = path;
 
