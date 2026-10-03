@@ -46,6 +46,7 @@ void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
     file_info->symbols = malloc(sizeof(char)*number_symbols);
     file_info->probabilities = malloc(sizeof(float)*number_symbols);
     file_info->new_symbols = calloc(number_symbols,sizeof(unsigned long long)*number_symbols);
+    file_info->code_len = calloc(number_symbols,sizeof(int)*number_symbols);
     
     assertSymbols(file_symbols,number_symbols,file_info->symbols);
     assertProbabilities(freq_symbols,number_symbols,file_info->total_symbols,file_info->probabilities);

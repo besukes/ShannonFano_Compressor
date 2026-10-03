@@ -1,5 +1,5 @@
 #include "types.h"
-#define IS_DEBUGGING_NS 1 //New symbols
+#define IS_DEBUGGING_NS 0 //New symbols
 #define IS_DEBUGGING_PARSED_S 0 //Parsed Symbols
 #define IS_DEBUGGING_PARSED_P 0 //Parsed Probabilities
 #define IS_DEBUGGING_PARSED_FREQ 0 //Parsed Frequencies

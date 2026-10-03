@@ -1,5 +1,6 @@
 #include "src/includes/types.h"
 #include "src/debug/debug.h"
+#include <stdio.h>
 
 
 void writeOutCompressedFile(CompressInfo * file_info);

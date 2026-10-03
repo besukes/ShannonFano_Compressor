@@ -12,6 +12,7 @@ CompressInfo init_compress_info(void){
     c.probabilities = NULL;
     c.symbols = NULL;
     c.file_path = NULL;
+    c.number_zeros = 0;
     return c;
 }
 
