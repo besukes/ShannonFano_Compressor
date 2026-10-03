@@ -1,14 +1,20 @@
 #include "write_out.h"
 
 
-
+/*Writes decompresssion info in the notation NEW_SYMBOL = OLD_SYMBOL in order to decompress after*/
 void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info){
-
+    fprintf(file_info->file,"\nDecompressed Information\n");
+    int size = file_info->n_symbols;
+    for(int i=0;i<size;i++){
+        fprintf(file_info->file," %llu = %c ",file_info->new_symbols[i],file_info->symbols[i]);
+    }
 }
 
+
+/*Writes out the bits of the new symbol to the buffer and print to the file when it reaches a size of 8 bits*/
 static void write_out_compressed(BitWriter* bw , unsigned long long value , int n_bits){
     for(int i=n_bits - 1;i>=0;i--){ //Reads MSB first , left to right
-        bw->buffer = (bw->buffer << 1) | ((value >> i) & 1ULL);
+        bw->buffer = (bw->buffer << 1) | ((value >> i) & 1ULL); //Grabs the current "i" bit
         bw->flush_bits++;
         if(bw->flush_bits == 8){
             fputc(bw->buffer,bw->file);
@@ -18,6 +24,7 @@ static void write_out_compressed(BitWriter* bw , unsigned long long value , int 
     }
 }
 
+/*Flushes the last bits in the buffer when the file was completely read , to avoid leaving important info behind*/
 static void flushout(BitWriter * bw){
     if(bw->flush_bits > 0){
         bw->buffer <<= (8 - bw->flush_bits); 
@@ -27,33 +34,37 @@ static void flushout(BitWriter * bw){
     }
 }
 
+/*Good looking function that counts how many relevant bits a 64 bit number has*/
 int count_bits(unsigned long long value){
     int counter=0;
     while((value>>counter)!=0) counter++;
     return counter;
 }
 
-
+/*Given an line from a life prints out the given new symbol generated that represents each character on it.*/
 void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new_file , BitWriter * bw){
+    //Just for safety purposes
     if(file_info->n_symbols == 0){
         printf("[ATTENTION] No symbols found in file\n");
         return;
     }
 
     int i=0;
-    while(line[i]!='\0'){
+    while(line[i]!='\0'){ //Loops through the entire line to map each character to its new code 
         int j=0;
         for(;j<file_info->n_symbols && line[i] != file_info->symbols[j];j++);
         if(j == file_info->n_symbols) printf("[ERROR] Error while finding symbol\n");
 
         unsigned long long temp = file_info->new_symbols[j];
-        if(temp == 0){fprintf(new_file,"%c",'\0'); file_info->number_zeros++;}
+        if(temp == 0){fprintf(new_file,"%c",'\0'); file_info->number_zeros++;} //Needs to be better handled
         else write_out_compressed(bw,temp,file_info->code_len[j]);
         i++;
     }
 }
 
 
+/*Given a already parsed "f" file , checks if theres already a compressed file relative to f and , if not ,
+compresses the file with some simple functions*/
 void writeOutCompressedFile(CompressInfo * file_info){
     int length = strlent(file_info->file_path);
     char new_path[length + 5];
