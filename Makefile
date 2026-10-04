@@ -1,5 +1,7 @@
 .PHONY: clean rmt compressor 
 
+all: compressor
+
 CC = gcc
 
 CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Isrc/includes -Isrc/debug
@@ -33,4 +35,4 @@ clean:
 	rm compressor
 
 rmt:
-	rm tests/t1_zip.txt tests/t2_zip.txt
+	rm -f tests/*_zip.txt
