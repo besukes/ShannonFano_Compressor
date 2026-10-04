@@ -1,6 +1,19 @@
+/*  This module is about decompressing a file compressed using the code provided in this repository , 
+it may (and most likely WILL) NOT WORK on a file compressed using other constructors.
+    This module expects the file to have a header in the following format :
+        ------------------------------
+            LAST RELEVANT BITS (1 BYTE)
+            FREQUENCY TABLE
+            end
+        ------------------------------
+    If the file does not contain this format , it will throw an error and will not execute.
+    The decompression itself cannot be done as of now but i'll eventually add it to the main function as a
+text argument that can be sent before the paths.
+*/
 #include "decompressor.h"
 #define INVALID_PATH 1
 #define NO_HEADER 2
+#define INVALID_HEADER_FORMAT 3
 
 
 /*Error handler for Decompression function*/
@@ -15,9 +28,28 @@ static int dc_error_handler(int flags){
     }
 }
 
+void parseFrequencyTable(char * line , CompressInfo* f_info){
+
+}
+
 /*Parses file header to store the information on each symbol that exists and keeps its frequency to calculate
 the probability to then apply the Shannon-Fano's algorithm to decompress the file*/
-int readFileHeader(FILE* file,CompressInfo* f_info){
+int readFileHeader(FILE* file,CompressInfo* f_info,int * lrb){
+    char line[LINE_MAX];
+
+    //Reads the last relevant bits in the last relevant byte , stored at the start of the header
+    fgets(line,LINE_MAX,file);
+    *lrb = (int)line[0];
+    if(line[1] != '\n') return (INVALID_HEADER_FORMAT);
+
+    //Reads the Frequency table of each symbol to reconstruct the probabilities table
+    int parsing_error = 0;
+    while(!compareString(line,"end") && !parsing_error){
+        parsing_error = fgets(line,LINE_MAX,file);
+        parseFrequencyTable(line,f_info);
+    }
+    if(parsing_error) return (INVALID_HEADER_FORMAT);
+
 
 }
 
@@ -34,7 +66,8 @@ static int decompress_handler(char * path){
     FILE * compressed_file = fopen(path,"r");
     if(compressed_file == NULL) return (dc_error_handler(INVALID_PATH));
 
-    int is_compressed_file = readFileHeader(compressed_file,&f_info);
+    int lrb = 0; //Last relevant bits in the file on the last byte
+    int is_compressed_file = readFileHeader(compressed_file,&f_info,&lrb);
     fclose(compressed_file);
 
     if(!is_compressed_file) return (dc_error_handler(NO_HEADER));
