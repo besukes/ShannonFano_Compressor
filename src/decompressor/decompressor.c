@@ -29,9 +29,18 @@ static int dc_error_handler(int flags){
     }
 }
 
-static void parseFrequencyTable(char * line , CompressInfo* f_info){
+/*Reads the frequency table of a compressed file header and stores the information directly onto f_info*/
+static void parseFrequencyTable(char * line , CompressInfo* f_info , int parser[MAX_SYMBOLS]){
+    int i=0;
+    while(line!='\0'){
+        char symb = line[i];
+        while(line[i] != '\0' && line[i] > '9' && line[i] < '0') i++;
+        while(line[i] != '\0' && line[i] != ' ') parser[symb] = (parser[symb]*10) + (int)line[i++];
 
+        while(line[i++] == ' ');
+    }
 }
+
 
 /*Parses file header to store the information on each symbol that exists and keeps its frequency to calculate
 the probability to then apply the Shannon-Fano's algorithm to decompress the file*/
@@ -45,9 +54,10 @@ static int readFileHeader(FILE* file,CompressInfo* f_info,int * lrb){
 
     //Reads the Frequency table of each symbol to reconstruct the probabilities table
     int parsing_error = 0;
+    int parser[MAX_SYMBOLS] = {0};
     while(!strcontain(line,"end") && !parsing_error){
         parsing_error = (fgets(line,LINE_MAX,file) == NULL);
-        parseFrequencyTable(line,f_info);
+        parseFrequencyTable(line,f_info,parser);
     }
     if(parsing_error) return (INVALID_HEADER_FORMAT);
 
