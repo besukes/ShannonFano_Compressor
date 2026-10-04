@@ -1,3 +1,5 @@
+.PHONY: clean rmt compressor 
+
 CC = gcc
 
 CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Isrc/includes -Isrc/debug
@@ -5,7 +7,7 @@ CFLAGS = -Wall -ggdb -Wextra -g3 -fsanitize=address,undefined -I. -Isrc/includes
 LDFLAGS = -fsanitize=address,undefined -lm
 
 SRC = src/main.c \
-	  src/compression/compressor.c \
+	  src/compression/sf_compressor.c \
 	  src/compression/sorter.c \
 	  src/decompressor/decompressor.c \
 	  src/initialization/init_clean.c \
@@ -29,4 +31,6 @@ build/%.o: %.c
 clean:
 	rm -rf build
 	rm compressor
-	rm tests/t1.txt tests/t2.txt
+
+rmt:
+	rm tests/t1_zip.txt tests/t2_zip.txt

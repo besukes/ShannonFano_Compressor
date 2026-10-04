@@ -25,3 +25,22 @@ Após execução do programa ele díra quanto tempo demorou a comprimir e será 
 Um exemplo prático seria um ficheiro calculos.txt que ficaria no final , na mesma pasta onde se encontra calculos.txt , agora com o nome calculos_zip.txt .
 <br>
 O programa também dirá no final a percentagem de compressão que conseguiu fazer , o rendimento desta compressão , noutras palavras.
+
+## Outros comandos
+
+O utilizador pode também usar os comandos:
+
+Para apagar a pasta build e o executável ***compressor***.
+
+```
+    make clean
+```
+
+Para apagar os ficheiros ***(%_zip.txt)*** da pasta tests.
+
+```
+    make rmt
+```
+
+
+
