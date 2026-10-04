@@ -2,12 +2,13 @@
 
 
 /*Writes decompresssion info in the notation NEW_SYMBOL = OLD_SYMBOL in order to decompress after*/
-void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info , int flushout_bits){
-    fprintf(new_file,"\nDecompression %d\n",flushout_bits);
+void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info){
+    fprintf(new_file,"%d\n",0);
     int size = file_info->n_symbols;
     for(int i=0;i<size;i++){
         fprintf(new_file,"%c:%0.f ",file_info->symbols[i],file_info->probabilities[i]*file_info->total_symbols);
     }
+    fprintf(new_file,"\nend\n");
 }
 
 
@@ -80,6 +81,8 @@ void writeOutCompressedFile(CompressInfo * file_info){
     }
     new_file = fopen(new_path,"w");
 
+    writeDecompressionInfo(new_file,file_info);
+
     //This refers to the file that is being compressed
     fclose(file_info->file);//Assumes file exists
     file_info->file = fopen(file_info->file_path,"r"); //Opens it again to read the file one more time to print
@@ -95,7 +98,10 @@ void writeOutCompressedFile(CompressInfo * file_info){
     }
     int flushout_bits = flushout(&bw);
 
-    writeDecompressionInfo(new_file,file_info,flushout_bits);
+    //Updates to store the last relevant bits on the last byte of the file
+    fseek(new_file,0,SEEK_SET);
+    fprintf(new_file,"%d\n",flushout_bits);
+    fseek(new_file,0,SEEK_END);
 
     fclose(new_file);
 }
