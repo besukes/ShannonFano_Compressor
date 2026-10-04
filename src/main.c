@@ -12,16 +12,16 @@
 /* Error Handler function to just inform the user what erros the program faced during execution*/
 static int error_handler(int error , int i){
     if(error == INVALID_PATH){
-        printf("[ERROR]You entered a invalid file path at argument %d\n , or the file exists ,"
-            "but as a line over 2048 symbols" , i - 1);
+        printf("[ERROR] You either entered a invalid file path at argument %d, or the file path exists,"
+            " but as a line over 2048 symbols\n" , i - 1);
         return INVALID_PATH;
     }
     else if(error == NO_PATH){
-        printf("[ERROR]You need to enter a file path to compress.\n");
+        printf("[ERROR] You need to enter a file path to compress.\n");
         return NO_PATH;
     }
     else if(error == NOT_COMPRESSABLE){
-        printf("[ERROR]You entered at position %d of your arguments , a non compressable file.\n" , i - 1);
+        printf("[ERROR] You entered at position %d of your arguments , a non compressable file.\n" , i - 1);
         return NOT_COMPRESSABLE;
     }
     return 0;
