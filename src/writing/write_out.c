@@ -2,7 +2,7 @@
 
 
 /*Writes decompresssion info in the notation NEW_SYMBOL = OLD_SYMBOL in order to decompress after*/
-void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info){
+static void writeDecompressionInfo(FILE * new_file , CompressInfo * file_info){
     fprintf(new_file,"%d\n",0);
     int size = file_info->n_symbols;
     for(int i=0;i<size;i++){
@@ -45,7 +45,7 @@ int count_bits(unsigned long long value){
 }
 
 /*Given an line from a life prints out the given new symbol generated that represents each character on it.*/
-void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new_file , BitWriter * bw){
+static void writeCompressedFileLine(char * line , CompressInfo * file_info , FILE * new_file , BitWriter * bw){
     //Just for safety purposes
     if(file_info->n_symbols == 0){
         printf("[ATTENTION] No symbols found in file\n");

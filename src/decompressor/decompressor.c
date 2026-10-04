@@ -23,18 +23,19 @@ static int dc_error_handler(int flags){
         return INVALID_PATH;
     }
     else if(flags == NO_HEADER){
-        printf("[ERROR] The file provided by the path doesn't include a decompression header\n");
+        printf("[ERROR] The file provided by the path doesn't include a decompression header ,"
+                "or includes one in an invalid format\n");
         return NO_HEADER;
     }
 }
 
-void parseFrequencyTable(char * line , CompressInfo* f_info){
+static void parseFrequencyTable(char * line , CompressInfo* f_info){
 
 }
 
 /*Parses file header to store the information on each symbol that exists and keeps its frequency to calculate
 the probability to then apply the Shannon-Fano's algorithm to decompress the file*/
-int readFileHeader(FILE* file,CompressInfo* f_info,int * lrb){
+static int readFileHeader(FILE* file,CompressInfo* f_info,int * lrb){
     char line[LINE_MAX];
 
     //Reads the last relevant bits in the last relevant byte , stored at the start of the header
@@ -44,8 +45,8 @@ int readFileHeader(FILE* file,CompressInfo* f_info,int * lrb){
 
     //Reads the Frequency table of each symbol to reconstruct the probabilities table
     int parsing_error = 0;
-    while(!compareString(line,"end") && !parsing_error){
-        parsing_error = fgets(line,LINE_MAX,file);
+    while(!strcontain(line,"end") && !parsing_error){
+        parsing_error = (fgets(line,LINE_MAX,file) == NULL);
         parseFrequencyTable(line,f_info);
     }
     if(parsing_error) return (INVALID_HEADER_FORMAT);
@@ -60,7 +61,7 @@ static void decompress(FILE* ext_file ,CompressInfo* f_info){
 
 
 /*Decompression function that grabs a compressed file and decompresses it back to normal */
-static int decompress_handler(char * path){
+int decompress_handler(char * path){
     CompressInfo f_info = init_compress_info();
 
     FILE * compressed_file = fopen(path,"r");

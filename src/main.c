@@ -10,7 +10,7 @@
 
 
 /* Error Handler function to just inform the user what erros the program faced during execution*/
-int error_handler(int error , int i){
+static int error_handler(int error , int i){
     if(error == INVALID_PATH){
         printf("[ERROR]You entered a invalid file path at argument %d\n , or the file exists ,"
             "but as a line over 2048 symbols" , i - 1);

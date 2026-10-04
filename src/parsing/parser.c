@@ -1,14 +1,14 @@
 #include "parser.h"
 
 /* Passes the symbols of the file to an array of symbols */
-void assertSymbols(char * orig , int number_s , char * dest){
+static void assertSymbols(char * orig , int number_s , char * dest){
     for(int i = 0 ; i < number_s ; i++){
         *(dest + i) = *(orig + i);
     }
 }
 
 /*Calculates the probability of each symbol appearing on the file.*/
-void assertProbabilities(int * freq , int number_s , int total_number_s , float * dest){
+static void assertProbabilities(int * freq , int number_s , int total_number_s , float * dest){
     float total = (float)total_number_s;
     for(int i=0 ; i < number_s ; i++){
         dest[i] = (float)freq[i] / total;
@@ -19,7 +19,7 @@ void assertProbabilities(int * freq , int number_s , int total_number_s , float 
 
 /*Translates what we have read from each line to actual meaningful information to latter use for 
 compression.*/
-void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
+static void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
     int number_symbols = 0;
     char file_symbols[256];
     int freq_symbols[256];
@@ -48,7 +48,7 @@ void info_parser(int symbols[MAX_SYMBOLS], CompressInfo * file_info){
 
 /* Reads each individual file line incrementing symbols array on its respective index ,
  for each time an symbol is seen.*/
-void lineParser(char line[LINE_MAX] , int symbols[MAX_SYMBOLS] , int * total_symbols){
+static void lineParser(char line[LINE_MAX] , int symbols[MAX_SYMBOLS] , int * total_symbols){
     for(int i=0;line[i] != '\0'; i++){
         symbols[line[i]]++;
         (*total_symbols)++;

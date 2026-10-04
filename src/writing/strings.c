@@ -24,7 +24,7 @@ void append_zip(char *orig,char* dest){
 }
 
 /*Checks if a string CONTAINER contains a CONTEDED string at its begging*/
-int contain_str(char * container , char * contended){
+int strcontain(char * container , char * contended){
     int i;
     for(i=0;contended[i] != '\0' && container[i] != '\0' && container[i] == contended[i];i++);
     return(contended[i] == '\0');

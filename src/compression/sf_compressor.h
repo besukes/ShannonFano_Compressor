@@ -3,6 +3,8 @@
 #include "src/debug/debug.h"
 #include <math.h>
 
+typedef unsigned long long ULL;
+
 
 void sortByProbability(char * symbols , float * probability , int number_s);
 int compressFile(CompressInfo * file_info);

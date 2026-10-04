@@ -1,11 +1,11 @@
 /* This module needs to compress the files , after the algorithm , but also leave the important
 details about the compresssion so it can be decompressed after when , and if , needed.
 */
-#include "compressor.h"
+#include "sf_compressor.h"
 
 
 /* Recursively applies Shannon-Fano's compression algorithm to turn the symbol into a sequence of bits*/
-int sfcompress(float * prob , unsigned long long * new_symb , int * bit_depth, int ns , float set_half_prob){
+static int sfcompress(float * prob , ULL * new_symb , int * bit_depth, int ns , float set_half_prob){
     //We reached the final depth of Shannon-Fano's Algorithm
     if(ns <= 1) return 1;
 
@@ -18,8 +18,10 @@ int sfcompress(float * prob , unsigned long long * new_symb , int * bit_depth, i
         n_left_tree ++;
         if(acc_prob >= set_half_prob) break;
     }
-    if(abs(set_half_prob - acc_prob-prob[i]) < abs(set_half_prob - acc_prob))
+    if(fabsf(set_half_prob - acc_prob-prob[i]) < fabsf(set_half_prob - acc_prob)){
         acc_prob = acc_prob - prob[i];
+        n_left_tree--; //Need to check if this works
+    }
 
     float right_node_prob = 2*set_half_prob - acc_prob;
 
@@ -41,7 +43,7 @@ int sfcompress(float * prob , unsigned long long * new_symb , int * bit_depth, i
 
 
 /* Checks if the probability distribution has maximum entropy , because if it does then the file cannot be compressed*/
-int max_entropy(float * prob , int ns){
+static int max_entropy(float * prob , int ns){
     if(ns > 0){ //Checks if theres atleast one symbol
         float prob_0 = prob[0];
         for(int i=1;i<ns;i++){
